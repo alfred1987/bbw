@@ -1,0 +1,67 @@
+{%- assign homepage_product_demo_enabled = section.settings.homepage_product_demo_enabled -%}
+{% if homepage_product_demo_enabled %}
+  {% if section.blocks.size > 0 %}
+	<div class="main-carousel-product-demo">
+      {% for block in section.blocks %}
+        <div class="carousel-cell">
+          <iframe src="{{ block.settings.homepage_pd_url }}?rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+          <div class="demo-content">
+            <ul>
+              <li>{{ block.settings.homepage_pd_title }}</li>
+              <li>{{ block.settings.homepage_pd_description }}</li>
+              <li><a class="view-more-btn" href="{{ block.settings.homepage_pd_view_more }}">View More</a></li>
+            </ul>
+          </div>
+      	</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endif %}
+{% schema %}
+  {
+    "name": "Homepage Product Demo",
+    "class": "homepage-product-demo",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "homepage_product_demo_enabled",
+        "label": "Enable Homepage Product Demo",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "video",
+		"name": "Video",
+        "settings": [
+          {
+            "type": "text",
+            "id": "homepage_pd_url",
+            "label": "Youtube Video Link"
+          },
+          {
+            "type": "text",
+            "id": "homepage_pd_title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "homepage_pd_description",
+            "label": "Description"
+          },
+          {
+          "type": "url",
+            "id": "homepage_pd_view_more",
+            "label": "View More Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Homepage Product Demo",
+        "category": "Layout"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+	<script src="https://cdn.shopify.com/s/files/1/0571/6508/6889/files/jquery.min.js"></script>
+    <title>{{ page_title }}</title>
+    {{ content_for_header }}
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    <script>
+      setTimeout(function(){
+        $("div.section--payment-method").click(function() {
+          $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+        });
+        $( "div.radio-wrapper" ).each(function( index ) {
+          if($(this).data('select-gateway') == '65704755369') {
+            var dragonpay = "https://cdn.shopify.com/s/files/1/0571/6508/6889/files/Dragonpay_Payment.png?v=1625280323";
+            $(this).find('label[for="checkout_payment_gateway_65704755369"] > img.offsite-payment-gateway-logo').attr('src', dragonpay);
+          }
+          if($(this).data('select-gateway') == '66208628905') {
+            var eghl = "https://cdn.shopify.com/s/files/1/0571/6508/6889/files/EGHL_Payment.png?v=1625280323";
+            $(this).find('label[for="checkout_payment_gateway_66208628905"] > img.offsite-payment-gateway-logo').attr('src', eghl);
+            $(this).find('label[for="checkout_payment_gateway_66208628905"] > img.offsite-payment-gateway-logo').addClass('customEghl');
+            $(this).find('.radio__label__accessory').remove();
+          }
+        });
+        $('img.logo__image').on('click', function() {
+        	window.location.href = '/';
+        });
+        if($('ol.breadcrumb> li').length < 4) {
+          $('ol.breadcrumb').prepend('<li class="breadcrumb__item breadcrumb__item--completed"><a class="breadcrumb__link" data-trekkie-id="breadcrumb_cart_link" href="/cart">Cart</a><svg class="icon-svg icon-svg--color-adaptive-light icon-svg--size-10 breadcrumb__chevron-icon" aria-hidden="true" focusable="false"> <use xlink:href="#chevron-right"></use> </svg></li>');
+        }
+      }, 188);
+    </script>
+    <style>
+      img.logo__image { cursor: pointer; }
+      .offsite-payment-gateway-logo { height: 30px; }
+      .customEghl { width: 200px; height: 35px; }
+    </style>
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+    {{ tracking_code }}
+  </body>
+</html>

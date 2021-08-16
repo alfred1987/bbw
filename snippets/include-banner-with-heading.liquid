@@ -1,0 +1,50 @@
+{% if type == 'block' %}
+  {% assign image = block.settings.image %}
+  {% assign title = block.settings.title %}
+  {% assign text_size = block.settings.text_size %}
+  {% assign link = block.settings.link %}
+  {% assign flash_sale = block.settings.flash_sale %}
+{% else %}
+  {% assign image = section.settings.image %}
+  {% assign title = section.settings.title %}
+  {% assign text_size = section.settings.text_size %}
+  {% assign link = section.settings.link %}
+  {% assign flash_sale = section.settings.flash_sale %}
+  {% endif %}
+{% assign flash_sale_enabled = settings.flash_sale_enabled %}
+<div class="container">
+  <div class="sixteen columns">
+    <div class="homepage_content section center clearfix">
+      <div class="title_container{% if flash_sale and flash_sale_enabled %} flash_sale{% endif %}">
+        {% if title != blank %}
+          <h2 class="title{% if flash_sale and flash_sale_enabled %} flash_sale{% endif %}">{{ title }}</h2>
+        {% endif %}
+        {% if flash_sale and flash_sale_enabled %}{% include 'countdown' %}{% endif %}
+      </div>
+      {% if image %}
+      	<a href="{{ link }}">
+          <img  src="{{ image.src | img_url: '100x' }}"
+                class="lazyload {{ settings.image_loading_style }}"
+                alt="{{ image.alt }}"
+                style="max-width: {{- image.width -}}px;"
+                data-sizes="auto"
+                data-src="{{ image | img_url: '2048x' }}"
+                data-srcset=" {{ image | img_url: '2048x' }} 2048w,
+                              {{ image | img_url: '1600x' }} 1600w,
+                              {{ image | img_url: '1200x' }} 1200w,
+                              {{ image | img_url: '1000x' }} 1000w,
+                              {{ image | img_url: '800x' }} 800w,
+                              {{ image | img_url: '600x' }} 600w,
+                              {{ image | img_url: '400x' }} 400w" />
+      	</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<style>
+  @media only screen and (max-width: 798px) {
+    .featured_text {
+      text-align: center;
+    }
+  }
+</style>

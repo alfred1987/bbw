@@ -1,0 +1,204 @@
+{% if section.blocks.size > 0 %}
+  <div class="sidebar">
+    {% for block in section.blocks %}
+      {% if block.type == 'image_link' %}
+    	<div class="block-wrap sidebar {% if block.settings.image_link_mobile != true %}sidebar-hidemobile{% endif %}">
+          <div class="block-header">{% if block.settings.image_link_title != '' %}<h4>{{ block.settings.image_link_title }}</h4>{% endif %}</div>
+          <div class="block">
+            <div class="tab">
+              <a {% if block.settings.image_link != blank %}href="{{ block.settings.image_link }}"{% endif %} class="link-item-image link-item">
+                {% if block.settings.image != nil %}
+                  <img data-src="{{ block.settings.image | img_url: '250x' }}"
+                       data-sizes="auto"
+                       class="lazyload {{ settings.image_loading_style }}"
+                       data-srcset="{{ block.settings.image | img_url: '500x' }} 500w,
+                                    {{ block.settings.image | img_url: '250x' }} 250w" />
+                {% endif %}
+                {% if block.settings.image_caption %}<div class="link-text">{{ block.settings.image_caption }}</div>{% endif %}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="block-wrap sidebar ">
+          <div class="block-header">{% if block.settings.links_title %}<h4>{{ block.settings.links_title }}</h4>{% endif %}</div>
+          <div class="block">
+            <div class="tab">
+              {% if block.settings.links_1 %}<a href="{{ block.settings.links_1 }}" class="link-item-text-only link-item">{% if block.settings.link_1_title %}<div class="link-text">{{ block.settings.link_1_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_2 %}<a href="{{ block.settings.links_2 }}" class="link-item-text-only link-item">{% if block.settings.link_2_title %}<div class="link-text">{{ block.settings.link_2_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_3 %}<a href="{{ block.settings.links_3 }}" class="link-item-text-only link-item">{% if block.settings.link_3_title %}<div class="link-text">{{ block.settings.link_3_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_4 %}<a href="{{ block.settings.links_4 }}" class="link-item-text-only link-item">{% if block.settings.link_4_title %}<div class="link-text">{{ block.settings.link_4_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_5 %}<a href="{{ block.settings.links_5 }}" class="link-item-text-only link-item">{% if block.settings.link_5_title %}<div class="link-text">{{ block.settings.link_5_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_6 %}<a href="{{ block.settings.links_6 }}" class="link-item-text-only link-item">{% if block.settings.link_6_title %}<div class="link-text">{{ block.settings.link_6_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_7 %}<a href="{{ block.settings.links_7 }}" class="link-item-text-only link-item">{% if block.settings.link_7_title %}<div class="link-text">{{ block.settings.link_7_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_8 %}<a href="{{ block.settings.links_8 }}" class="link-item-text-only link-item">{% if block.settings.link_8_title %}<div class="link-text">{{ block.settings.link_8_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_9 %}<a href="{{ block.settings.links_9 }}" class="link-item-text-only link-item">{% if block.settings.link_9_title %}<div class="link-text">{{ block.settings.link_9_title }}</div>{% endif %}</a>{% endif %}
+              {% if block.settings.links_10 %}<a href="{{ block.settings.links_10 }}" class="link-item-text-only link-item">{% if block.settings.link_10_title %}<div class="link-text">{{ block.settings.link_10_title }}</div>{% endif %}</a>{% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "Homepage Sidebar",
+  "class": "homepage-sidebar-section",
+  "max_blocks": 7,
+  "blocks": [
+    {
+      "type": "image_link",
+      "name": "Image with Link",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "checkbox",
+          "id": "image_link_mobile",
+          "label": "Show on mobile",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "image_link_title",
+          "label": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "500x350px/500x500px recommended"
+        },
+        {
+          "type": "text",
+          "id": "image_caption",
+          "label": "Image caption"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Links",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "links_title",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "link_1_title",
+          "label": "Link 1 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_1",
+          "label": "Link 1"
+        },
+        {
+        "type": "text",
+        "id": "link_2_title",
+        "label": "Link 2 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_2",
+          "label": "Link 2"
+        },
+        {
+        "type": "text",
+        "id": "link_3_title",
+        "label": "Link 3 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_3",
+          "label": "Link 3"
+        },
+        {
+        "type": "text",
+        "id": "link_4_title",
+        "label": "Link 4 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_4",
+          "label": "Link 4"
+        },
+        {
+        "type": "text",
+        "id": "link_5_title",
+        "label": "Link 5 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_5",
+          "label": "Link 5"
+        },
+        {
+        "type": "text",
+        "id": "link_6_title",
+        "label": "Link 6 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_6",
+          "label": "Link 6"
+        },
+        {
+        "type": "text",
+        "id": "link_7_title",
+        "label": "Link 7 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_7",
+          "label": "Link 7"
+        },
+        {
+        "type": "text",
+        "id": "link_8_title",
+        "label": "Link 8 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_8",
+          "label": "Link 8"
+        },
+        {
+        "type": "text",
+        "id": "link_9_title",
+        "label": "Link 9 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_9",
+          "label": "Link 9"
+        },
+        {
+        "type": "text",
+        "id": "link_10_title",
+        "label": "Link 10 Title"
+        },
+        {
+          "type": "url",
+          "id": "links_10",
+          "label": "Link 10"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

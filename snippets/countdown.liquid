@@ -1,0 +1,4 @@
+<div class="countdown_container">
+  <span class="countdown_text" style="{% if template contains 'product' %}color:white;{% endif %}">{% if template contains 'product' or settings.end_hour == 23 and settings.end_minute == 59 %}Ends in{% else %}Refresh in{% endif %}</span>
+  <div class="countdown_timer"></div>
+</div>

@@ -1,0 +1,68 @@
+{% assign link_with_image_1_title = block.settings.link_with_image_1_title %}
+{% assign image_1 = block.settings.image_1 %}
+{% assign link_with_image_1 = block.settings.link_with_image_1 %}
+{% assign link_with_image_2_title = block.settings.link_with_image_2_title %}
+{% assign image_2 = block.settings.image_2 %}
+{% assign link_with_image_2 = block.settings.link_with_image_2 %}
+{% assign link_with_image_3_title = block.settings.link_with_image_3_title %}
+{% assign image_3 = block.settings.image_3 %}
+{% assign link_with_image_3 = block.settings.link_with_image_3 %}
+{% assign link_with_image_4_title = block.settings.link_with_image_4_title %}
+{% assign image_4 = block.settings.image_4 %}
+{% assign link_with_image_4 = block.settings.link_with_image_4 %}
+<div class="container links links-with-images">
+  <div class="columns sixteen center alpha omega">
+    {% if link_with_image_1 != blank %}
+      <a href="{{ link_with_image_1 }}" class="one-fourth alpha mr-1 column homepage-links with-image override-inline">
+        {% if image_1 != nil %}
+          <img 
+            alt="{{ image_1.alt }}"
+            data-src="{{ image_1 | img_url: '500x' }}"
+            data-srcset="{{ image_1 | img_url: '500x' }} 500w, {{ image_1 | img_url: '250x' }} 250w"
+            data-sizes="auto"
+            class="lazyload {{ settings.image_loading_style }}" />
+        {% endif %}
+        {% if link_with_image_1_title != blank %}<div class="link-text">{{ link_with_image_1_title }}</div>{% endif %}
+      </a>
+    {% endif %}
+    {% if link_with_image_2 != blank %}
+      <a href="{{ link_with_image_2 }}" class="one-fourth column homepage-links with-image override-inline">
+        {% if image_2 != nil %}
+          <img 
+            alt="{{ image_2.alt }}"
+            data-src="{{ image_2 | img_url: '500x' }}"
+            data-srcset="{{ image_2 | img_url: '500x' }} 500w, {{ image_2 | img_url: '250x' }} 250w"
+            data-sizes="auto"
+            class="lazyload {{ settings.image_loading_style }}" />
+        {% endif %}
+        {% if link_with_image_2_title != blank %}<div class="link-text">{{ link_with_image_2_title }}</div>{% endif %}
+      </a>
+    {% endif %}
+    {% if link_with_image_3 != blank %}
+      <a href="{{ link_with_image_3 }}" class="one-fourth mr-1 column homepage-links with-image override-inline">
+        {% if image_2 != nil %}
+          <img 
+            alt="{{ image_3.alt }}"
+            data-src="{{ image_3 | img_url: '500x' }}"
+            data-srcset="{{ image_3 | img_url: '500x' }} 500w, {{ image_3 | img_url: '250x' }} 250w"
+            data-sizes="auto"
+            class="lazyload {{ settings.image_loading_style }}" />
+        {% endif %}
+        {% if link_with_image_3_title != blank %}<div class="link-text">{{ link_with_image_3_title }}</div>{% endif %}
+      </a>
+    {% endif %}
+    {% if link_with_image_4 != blank %}
+      <a href="{{ link_with_image_4 }}" class="one-fourth omega column homepage-links with-image override-inline">
+        {% if image_4 != nil %}
+          <img 
+            alt="{{ image_4.alt }}"
+            data-src="{{ image_4 | img_url: '500x' }}"
+            data-srcset="{{ image_4 | img_url: '500x' }} 500w, {{ image_4 | img_url: '250x' }} 250w"
+            data-sizes="auto"
+            class="lazyload {{ settings.image_loading_style }}" />
+        {% endif %}
+        {% if link_with_image_4_title != blank %}<div class="link-text">{{ link_with_image_4_title }}</div>{% endif %}
+      </a>
+    {% endif %}
+  </div>
+</div>

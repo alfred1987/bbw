@@ -1,0 +1,33 @@
+{% if collection and collection.all_products_count > 1 %}{% assign recommend_tag_col = collection.handle %}{% else %}{% assign recommend_tag_col = product.collections.last.handle %}{% endif %}
+{% for tag in product.tags %}
+  {% if tag contains product.metafields.bbwmy.recommend_tag_custom %}
+    {% assign recommend_tag_collection_handle = tag | downcase | replace: " ", "-" %}
+    {% if collections[recommend_tag_collection_handle].all_products_count > 0 %}
+      {% assign recommend_tag_col = recommend_tag_collection_handle %}
+      {% assign collection = collections[recommend_tag_col] %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% if recommend_tag_col %}
+  {% if collections[recommend_tag_col].all_products_count != 1 or collections[recommend_tag_col].products.first.id != product.id %}
+    {% assign skip_product = product %}
+    {% assign products = collections[recommend_tag_col].products %}
+    {% unless sidebar %} <div class="container"> {% endunless %}
+      <div class="recommend-tags-products__title {% unless section.settings.recommend_tag_products_style == 'slider' %}{% if sidebar %}twelve columns{% else %}sixteen columns{% endif %}{% endunless %}">
+        <h4 class="title center">{{ section.settings.recommend_tag_products_title }}</h4>
+        <div class="feature_divider"></div>
+      </div>
+      <div class="clear"></div>
+    {% unless sidebar %}</div>{% endunless %}
+    {% if section.settings.recommend_tag_products_style == 'slider' %}
+      {% assign limit = section.settings.recommend_tag_products_limit %}
+      <div class="recommend-tags-products recommend-tags-products--slider js-recommend-tags-products-slider">{% if recommend_tag_col and collections[recommend_tag_col].all_products_count > 0 %}{% include 'product-slider', recommend_tag_products: true %}{% endif %}</div>
+    {% else %}
+      {% assign limit = section.settings.recommend_tag_products_limit | plus: 1 %}
+      {% assign products_per_row = section.settings.recommend_tag_products_per %}
+      {% if recommend_tag_col and collections[recommend_tag_col].all_products_count > 0 %}
+        {% unless sidebar %}<div class="container recommend-tags-products--grid">{% endunless %}<div class="{% if sidebar %}twelve{% else %}sixteen{% endif %} columns">{% include 'product-loop', recommend_tag_products: true %}</div>{% unless sidebar %}</div>{% endunless %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}

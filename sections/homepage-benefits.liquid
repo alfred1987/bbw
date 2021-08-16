@@ -1,0 +1,57 @@
+{%- assign homepage_benefits_enabled = section.settings.homepage_benefits_enabled -%}
+{% if homepage_benefits_enabled %}
+  {% if section.blocks.size > 0 %}
+	<ul>
+    {% for block in section.blocks %}
+      	<li>
+          <a href="{{ block.settings.homepage_benefits_url }}"><img src="{{  block.settings.homepage_benefits_image | img_url:'master' }}" /></a>
+          <div>{{ block.settings.homepage_benefits_title }}</div>
+      	</li>
+	{% endfor %}
+	</ul>
+  {% endif %}
+{% endif %}
+{% schema %}
+  {
+    "name": "Homepage Benefits",
+    "class": "homepage-benefits",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "homepage_benefits_enabled",
+        "label": "Enable Homepage Benefits",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+		"name": "Collection",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "homepage_benefits_image",
+            "label": "Image",
+            "info": "152 x 108px recommended"
+          },
+          {
+            "type": "text",
+            "id": "homepage_benefits_title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "homepage_benefits_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Homepage Benefits",
+        "category": "Layout"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,91 @@
+<script type='application/ld+json'>
+[
+  {
+      "@context": "http://schema.org",
+      "@type": "LocalBusiness",
+      "logo": "https://cdn.shopify.com/s/files/1/1802/0111/t/23/assets/logo.png?17971796900726143568",
+      "image": "https://cdn.shopify.com/s/files/1/1802/0111/t/24/assets/store.png?171216900726143568",
+      "name": "{{ shop.name }}",
+      "telephone": "+60378746200",
+      "geo":{
+          "@type": "GeoCoordinates",
+          "latitude": "3.1967622",
+          "longitude": "101.6100892"
+      },
+      "url": "{{ shop.url }}",
+      "priceRange": "$$$",
+      "email": "{{ shop.email }}",
+      "contactPoint":    {
+          "@type": "ContactPoint",
+          "telephone": "+60378746200",
+          "contactType": "Technical Support",
+          "email": "null"
+      },
+      "address":    {
+          "@type": "PostalAddress",
+          "addressCountry": "{{ shop.address.country }}",
+          "addressLocality": "{{ shop.address.city }}",
+          "addressRegion": "{{ shop.address.province }}",
+          "postalCode": "{{ shop.address.zip }}",
+          "streetAddress": "{{ shop.address.street }}"
+      },
+      "openingHours": "Mo-Sa 10:00-21:00",
+      "sameAs": ["https://www.facebook.com/florensia"]
+  },
+  {% comment %} ***WebSite*** {% endcomment %}
+  {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "url": "{{ shop.url }}",
+      "potentialAction": {"@type": "SearchAction",
+      "target": "{{ shop.url }}/search?type=product&q={query}",
+      "query-input": "required name=query"}
+  }
+  {% comment %} ***Product*** {% endcomment %}
+  {% if template == "product" %}
+  ,
+  {
+      "@context": "http://schema.org/",
+      "@type": "Product",
+      "name": "{{ product.title }}",
+      "image": "{{ product.featured_image }}",
+      "description": "{{ product.description | strip_html | truncatewords: 20 }}",
+      "brand":
+      {
+          "@type": "Thing",
+          "name": "{{ product.vendor }}"
+      },
+      "offers":
+      {
+          "@type": "Offer",
+          "priceCurrency": "{{ shop.currency }}",
+          "price": "{{ product.price | divided_by: 100 }}",
+
+          {% if product.available %}
+            "availability": "http://schema.org/InStock"
+          {% else %}
+            "availability": "http://schema.org/OutOfStock"
+          {% endif %}
+      }
+  },
+  {
+      "@context":"http://schema.org",
+      "@type": "Book",
+      "author": "{{product.metafields.attributes.author}}",
+      "bookFormat": "{{ product.metafields.attributes.format }}",
+      "image": "{{ product | img_url }}",
+      "inLanguage": "English",
+      "isbn": "{{ product.metafields.attributes.isbn }}",
+      "name" : "{{ product.title }}",
+      "numberOfPages": "{{ product.metafields.attributes.pages }}",
+      "offers": {
+        "@type": "Offer",
+        "availability": {% if product.available %} "http://schema.org/InStock" {% else %} "http://schema.org/OutOfStock" {% endif %},
+        "price": "{{ product.price }}",
+        "priceCurrency": "{{ shop.currency }}"
+      },
+      "publisher": "{{ product.metafields.attributes.publisher }}"
+  }
+  {% endif %}
+]
+</script>

@@ -1,0 +1,63 @@
+{%- assign homepage_free_shipping_enabled = section.settings.homepage_free_shipping_enabled -%}
+{% if homepage_free_shipping_enabled %}
+  <div class="free_shipping_banner"></div>
+  <script>
+	document.addEventListener("limoniapps:discountninja:cart:updated", function (event) { 
+      $.ajax({
+        url: '/cart.js',
+        dataType: "json",
+        cache: false,
+        success: function(cart) {
+          const formatter = new Intl.NumberFormat('en-MY', {style: 'decimal',currency: 'MYR',minimumFractionDigits: 2});
+          if(event.detail.data[0].total_discounted_price != undefined) {
+            var cartTotalPrice = event.detail.data[0].total_discounted_price.toString();
+          } else {
+            var cartTotalPrice = '{{ cart.total_price | money }}';
+          }
+          cartTotalPrice = cartTotalPrice.replace('RM','');
+          cartTotalPrice = cartTotalPrice.replace(',','');
+          cartTotalPrice = parseFloat(cartTotalPrice).toFixed(2);
+          if(cartTotalPrice >= parseFloat('{{ section.settings.homepage_free_shipping_value }}')) {
+          	$('.free_shipping_banner').html('{{ section.settings.homepage_free_shipping_success_text }} ');
+          } else {
+          	cartTotalPrice = parseFloat('{{ section.settings.homepage_free_shipping_value }}').toFixed(2) - parseFloat(cartTotalPrice).toFixed(2);              
+          	$('.free_shipping_banner').html('{{ section.settings.homepage_free_shipping_text }}' + formatter.format(cartTotalPrice) + ' away from FREE SHIPPING!');                          
+          }
+        }
+      });    
+	});   
+  </script>
+{% endif %}
+{% schema %}
+  {
+    "name": "Header Top Bar",
+    "class": "header-top-bar",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Free shipping bar"
+      },
+      {
+        "type": "checkbox",
+        "id": "homepage_free_shipping_enabled",
+        "label": "Enable free shipping counter",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "homepage_free_shipping_text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "homepage_free_shipping_success_text",
+        "label": "Success text"
+      },
+      {
+        "type": "text",
+        "id": "homepage_free_shipping_value",
+        "label": "Value"
+      }
+    ]
+  }
+{% endschema %}

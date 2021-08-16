@@ -1,0 +1,12 @@
+<a name="pagecontent" id="pagecontent"></a>
+<div class="index-sections">
+  {% if settings.homepage_sidebar %}
+  <div class="container full-width homepage-with-sidebar">
+    <div class="homepage-sidebar">{% section 'homepage-sidebar' %}</div>
+    <div class="main-content">{{ content_for_index }}</div>
+  </div>
+  {% else %}
+  {{ content_for_index }}
+  {% endif %}
+</div>
+{% if settings.full_width_newsletter %}{% section 'newsletter' %}{% endif %}

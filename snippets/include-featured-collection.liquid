@@ -1,0 +1,159 @@
+{% if type == 'block' %}
+  {% assign title = block.settings.title %}
+  {% assign settingCollection = block.settings.collection %}
+  {% assign collection_style = block.settings.collection_style %}
+  {% assign collection_description = block.settings.collection_description %}
+  {% assign products_per = block.settings.products_per %}
+  {% assign products_limit = block.settings.products_limit %}
+  {% assign custom_link = block.settings.custom_link %}
+  {% assign flash_sale = block.settings.flash_sale %}
+  {% assign view_more = block.settings.view_more %}
+{% else %}
+  {% assign title = section.settings.title %}
+  {% assign settingCollection = section.settings.collection %}
+  {% assign collection_style = section.settings.collection_style %}
+  {% assign collection_description = section.settings.collection_description %}
+  {% assign products_per = section.settings.products_per %}
+  {% assign products_limit = section.settings.products_limit %}
+  {% assign custom_link = section.settings.custom_link %}
+  {% assign flash_sale = section.settings.flash_sale %}
+  {% assign view_more = section.settings.view_more %}
+{% endif %}
+{% assign flash_sale_enabled = settings.flash_sale_enabled %}
+{% assign countdown_timer_enabled = settings.countdown_timer_enabled %}
+{% if settingCollection == blank %}
+  {%- assign section_onboarding = true -%}
+  {% assign products_length = products_limit | plus: 0 %}
+{% else %}
+  {%- assign section_onboarding = false -%}
+{% endif %}
+<div class="featured_collection_container{% if flash_sale and flash_sale_enabled %} flash_sale{% endif %} center">
+  <div class="container featured_products product-{{ collection_style }}">
+    <div class="sixteen columns align_left homepage_content">
+      {% if title != blank %}
+      <a class="title_container{% if flash_sale and flash_sale_enabled %} flash_sale{% endif %}"
+        href="{% if custom_link != blank %}{{ custom_link }}{% else %}{{ collections[settingCollection].url }}{% endif %}">
+        <h2 class="title{% if flash_sale and flash_sale_enabled %} flash_sale{% endif %}">{{ title }}</h2>
+        {% if flash_sale and flash_sale_enabled and countdown_timer_enabled %}{% include 'countdown' %}{% endif %}
+        {% if view_more != empty %}<span class="view_more button button_secondary{% if flash_sale and flash_sale_enabled %} mobile_hidden{% endif %}">{{ view_more }}</span>{% endif %}
+      </a>
+      <div class="feature_divider"></div>
+      {% endif %}
+      {% if collection_description and collections[settingCollection].description != blank %}<div class="section clearfix">{{ collections[settingCollection].description }}</div>{% endif %}
+    </div>
+  </div>
+  {% assign limit = products_limit %}
+  {% if collection_style == 'slider' %}
+  {% assign col = settingCollection %}
+  {% assign products = collections[settingCollection].products %}
+  {% assign per_slide = products_per %}
+  <div class="container js-product-slider homepage-product-slider">
+    {% if section_onboarding == false %}
+    {% if col and collections[col].all_products_count > 0 %}{% include 'product-slider', per_slide: products_per, featured_collection: col  %}{% endif %}
+    {% else %}
+    <div class="slider-gallery products-slider products-length-{{ products_length }}"
+      data-products-per-slide="{{ per_slide }}" data-products-limit="{{ limit }}"
+      data-products-available="{{ products_length }}">
+      {% for i in (1..limit) %}
+      {% assign per_slide_num = products_per | plus: 0 %}
+      <div class="gallery-cell thumbnail {% if products_length > per_slide_num %}visible-{{ per_slide }}{% else %}visible-{{ products_length }}{% endif %}">
+        <div class="product-wrap" 
+              data-limoniapps-discountninja-product-handle="{{ product.handle }}"
+              data-limoniapps-discountninja-product-collections="{{ product.collections | map: 'handle' | join: ',' }}"
+              data-limoniapps-discountninja-product-available="{{ product.available}}"
+              data-limoniapps-discountninja-product-price="{{ product.price}}"
+              data-limoniapps-discountninja-product-compareatprice="{{ product.compare_at_price_max}}"
+              data-limoniapps-discountninja-product-pricevaries="{{ product.price_varies}}"
+              data-limoniapps-discountninja-product-pricemin="{{ product.price_min}}"
+              data-limoniapps-discountninja-product-tags="{{ product.tags | join: ',' }}">
+          {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+          {% unless the_snippet_fave_icon contains 'Liquid error' %}{{ the_snippet_fave_icon }}{% endunless %}    
+          <div class="relative product_image">
+            <a href="#" itemprop="url">
+              <object class="placeholder-image">
+                {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+              </object>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% if flash_sale and flash_sale_enabled and view_more != empty %}<a href="{% if custom_link != blank %}{{ custom_link }}{% else %}{{ collections[settingCollection].url }}{% endif %}"><span class="view_more button button_secondary mobile_only">{{ view_more }}</span></a>{% endif %}
+  {% else %}
+  {% if section_onboarding == false %}
+  {% assign limit = products_limit %}
+  {% assign collection = collections[settingCollection] %}
+  {% assign products = collections[settingCollection].products %}
+  {% assign products_per_row = products_per %}
+  <div class="container"><div class="sixteen columns">{% include 'product-loop' %}</div></div>
+  {% else %}
+  {% assign products_per_row = products_per %}
+  <div class="container">
+    <div class="sixteen columns">
+      {% capture new_row %}
+      <br class="clear product_clear" />
+      {% endcapture %}
+      <div itemtype="http://schema.org/ItemList" class="product-list collection-matrix clearfix">
+        {% for i in (1..limit) %}
+        {% comment %}{% assign collection_group = products | map: 'id' %}{% endcomment %}
+        {% assign collection_group_thumb = collection_group | append : 'thumb' %}
+        {% assign collection_group_mobile = collection_group | append : 'mobile' %}
+        <div class="
+                {% if products_per_row == 2 %}
+                  eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}
+                {% elsif products_per_row == 3 %}
+                  one-third column {% cycle collection_group_thumb: 'alpha', '', 'omega' %}
+                {% elsif products_per_row == 4 %}
+                  four columns {% cycle collection_group_thumb: 'alpha', '', '', 'omega' %}
+                {% elsif products_per_row == 5 %}
+                  one-fifth column {% cycle collection_group_thumb: 'alpha', '', '', '', 'omega' %}
+                {% elsif products_per_row == 6 %}
+                  one-sixth column {% cycle collection_group_thumb: 'alpha', '', '', '', '', 'omega' %}
+                {% else %}
+                  one-seventh column {% cycle collection_group_thumb: 'alpha', '', '', '', '', '', 'omega' %}
+                {% endif %} thumbnail {% cycle collection_group_mobile: 'even', 'odd' %}">
+          <div class="product-wrap"
+                data-limoniapps-discountninja-product-handle="{{ product.handle }}"
+                data-limoniapps-discountninja-product-collections="{{ product.collections | map: 'handle' | join: ',' }}"
+                data-limoniapps-discountninja-product-available="{{ product.available}}"
+                data-limoniapps-discountninja-product-price="{{ product.price}}"
+                data-limoniapps-discountninja-product-compareatprice="{{ product.compare_at_price_max}}"
+                data-limoniapps-discountninja-product-pricevaries="{{ product.price_varies}}"
+                data-limoniapps-discountninja-product-pricemin="{{ product.price_min}}"
+                data-limoniapps-discountninja-product-tags="{{ product.tags | join: ',' }}">
+            {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+            {% unless the_snippet_fave_icon contains 'Liquid error' %}
+            {{ the_snippet_fave_icon }}
+            {% endunless %}
+            <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+              <a href="#" itemprop="url">
+                {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+              </a>
+            </div>
+          </div>
+        </div>
+        {% if products_per_row == 2 %}
+        {% cycle collection_group: '', new_row %}
+        {% elsif products_per_row == 3 %}
+        {% cycle collection_group: '', '', new_row %}
+        {% elsif products_per_row == 4 %}
+        {% cycle collection_group: '', '', '', new_row %}
+        {% elsif products_per_row == 5 %}
+        {% cycle collection_group: '', '', '', '', new_row %}
+        {% elsif products_per_row == 6 %}
+        {% cycle collection_group: '', '', '', '', '', new_row %}
+        {% elsif products_per_row == 7 %}
+        {% cycle collection_group: '', '', '', '', '', '', new_row %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+</div>

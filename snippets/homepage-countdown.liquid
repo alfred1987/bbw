@@ -1,0 +1,17 @@
+<div class="countdown_container">
+  <ul>
+    <li>
+      <span class="countdown_text">
+        {%- assign homepage_msb_text_enabled = section.settings.homepage_msb_text_enabled -%}
+        {% if homepage_msb_text_enabled %}{{ section.settings.homepage_msb_text }}{% endif %}
+      </span>
+    </li>
+    <li><div class="main_countdown_timer"></div></li>
+  </ul>
+</div>
+<style>
+  .homepage-main-sale .countdown_container .countdown_text,
+  .homepage-main-sale .countdown_timer .countDown_interval_basic_cont_description, .homepage-main-sale .main_countdown_timer .countDown_interval_basic_cont_description {
+  	color: {{ settings.countdown_text_color }} !important;
+  }
+</style>

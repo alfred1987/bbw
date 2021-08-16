@@ -1,0 +1,48 @@
+<div class="detail-sections">
+    <div class="recommended-heading">
+      <h3>{{section.settings.recommended-heading}}</h3>
+      <p>{{section.settings.recommended-subHeading}}</p>
+    </div>
+    <div class="sixteen columns">
+      {% for block in section.blocks%}<div class="one-fourth column vertical-spacing"> <a href="{{ block.settings.image_block_select_url }}"><img  class="image-alignment" src="{{ block.settings.image_block_select_background | img_url: "master" }}" alt="{{ block.settings.image_block_select_background.alt }}"></a></div>  {% endfor %}	
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Recommendation",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Heading Text",
+      "id": "recommended-heading",
+      "default"	: "Don't Know What to Buy? Let Us Help you!"
+    },
+    {
+      "type": "text",
+      "label": "Sub Heading Text",
+      "id": "recommended-subHeading",
+      "default"	: "There’s always a book for everyone! Let us give you an idea on how to find the right book to make reading fun!"
+    }
+  ],
+
+  "blocks":	[
+    {
+      "type": "image-block-select",
+      "name": "Image Selection Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Select Image",
+          "id": "image_block_select_background",
+          "info": "310 x 410px recommended"
+        },
+        {
+          "type": "url",
+          "label": "Image URL",
+          "id" : "image_block_select_url"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

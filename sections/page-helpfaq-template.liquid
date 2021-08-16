@@ -1,0 +1,361 @@
+<div class="container main content">
+  <div class="sixteen columns page clearfix">
+      <h1 class="title-faq">{{ page.title }}</h1>
+      <div>{% include 'page-multi-column', content: page.content %}</div><br/>
+  	<div class="flex-container">
+      <div class="flex-item">
+        <div class="faq">
+			<div class="feature_divider">
+                <input type="checkbox" id="tab-1" class="tab-toggle"/>
+                <label for="tab-1" class="tab-label">{{ 'pages.helpfaq.general_questions' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "general_questions" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-generalquestions-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-generalquestions-{{counter}}" class="subtab-label">{{block.settings.general_questions_question}}</label>
+                    <article class="subtab-content">{{block.settings.general_questions_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+             </div>
+            <div class="feature_divider">
+                <input type="checkbox" id="tab-2" class="tab-toggle"/>
+                <label for="tab-2" class="tab-label">{{ 'pages.helpfaq.membership' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "membership" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-membership-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-membership-{{counter}}" class="subtab-label">{{block.settings.membership_question}}</label>
+                    <article class="subtab-content">{{block.settings.membership_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="feature_divider">
+                <input type="checkbox" id="tab-3" class="tab-toggle"/>
+                <label for="tab-3" class="tab-label">{{ 'pages.helpfaq.orders' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "orders" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-orders-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-orders-{{counter}}" class="subtab-label">{{block.settings.orders_question}}</label>
+                    <article class="subtab-content">{{block.settings.orders_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="feature_divider">
+                <input type="checkbox" id="tab-4" class="tab-toggle"/>
+                <label for="tab-4" class="tab-label">{{ 'pages.helpfaq.payment' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "payment" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-payment-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-payment-{{counter}}" class="subtab-label">{{block.settings.payment_question}}</label>
+                    <article class="subtab-content">{{block.settings.payment_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-5" class="tab-toggle"/>
+                <label for="tab-5" class="tab-label">{{ 'pages.helpfaq.shipping' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "shipping" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-shipping-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-shipping-{{counter}}" class="subtab-label">{{block.settings.shipping_question}}</label>
+                    <article class="subtab-content">{{block.settings.shipping_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-6" class="tab-toggle"/>
+                <label for="tab-6" class="tab-label">{{ 'pages.helpfaq.damaged_items' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "damaged_items" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-damaged_items-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-damaged_items-{{counter}}" class="subtab-label">{{block.settings.damaged_items_question}}</label>
+                    <article class="subtab-content">{{block.settings.damaged_items_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-7" class="tab-toggle"/>
+                <label for="tab-7" class="tab-label">{{ 'pages.helpfaq.refunds' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "refunds" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-refunds-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-refunds-{{counter}}" class="subtab-label">{{block.settings.refunds_question}}</label>
+                    <article class="subtab-content">{{block.settings.refunds_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-8" class="tab-toggle"/>
+                <label for="tab-8" class="tab-label">{{ 'pages.helpfaq.cancellation' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "cancellation" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-cancellation-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-cancellation-{{counter}}" class="subtab-label">{{block.settings.cancellation_question}}</label>
+                    <article class="subtab-content">{{block.settings.cancellation_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-10" class="tab-toggle"/>
+                <label for="tab-10" class="tab-label">{{ 'pages.helpfaq.technical_issues' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "technical_issues" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-technical_issues-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-technical_issues-{{counter}}" class="subtab-label">{{block.settings.technical_issues_question}}</label>
+                    <article class="subtab-content">{{block.settings.technical_issues_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+           <div class="feature_divider">
+                <input type="checkbox" id="tab-11" class="tab-toggle"/>
+                <label for="tab-11" class="tab-label">{{ 'pages.helpfaq.promotions' | t }}</label>
+                {% assign counter = 1 %}
+                {% for block in section.blocks %}
+                {% if block.type == "promotions" %}
+                <div class="tab-content">
+                    <input type="checkbox" id="subtab-promotions-{{counter}}" class="subtab-toggle">
+                    <label for="subtab-promotions-{{counter}}" class="subtab-label">{{block.settings.promotions_question}}</label>
+                    <article class="subtab-content">{{block.settings.promotions_answer}}</article>
+                </div>
+                {% assign counter = counter | plus : 1 %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+      </div>
+      <div class="flex-item"><div style="margin:0 auto;" class="pxFormGenerator" id="KN6p4vRd5Eh04K-5BkGDpw"></div></div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Help FAQ",
+  "blocks" : 
+    [
+      {
+        "type" : "general_questions",
+        "name": "General Questions",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "general_questions_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "general_questions_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "membership",
+        "name": "Membership",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "membership_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "membership_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "orders",
+        "name": "Orders",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "orders_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "orders_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "payment",
+        "name": "Payment",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "payment_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "payment_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "shipping",
+        "name": "Shipping",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "shipping_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "shipping_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "damaged_items",
+        "name": "Damaged Items",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "damaged_items_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "damaged_items_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "refunds",
+        "name": "Refunds",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "refunds_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "refunds_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "cancellation",
+        "name": "Cancellation",
+        "settings": 
+        [
+          {
+            "type": "text",
+            "id": "cancellation_question",
+            "label": "Question",
+            "default" : "Place The Question Here"
+          },
+          {
+            "type": "richtext",
+            "id": "cancellation_answer" ,
+            "label": "Answer",
+            "default" : "<p>Place The Answer Here</p>"
+          }
+        ]
+      },
+      {
+        "type" : "technical_issues",
+        "name": "Technical Issues",
+        "settings": 
+          [
+            {
+              "type": "text",
+              "id": "technical_issues_question",
+              "label": "Question",
+              "default" : "Place The Question Here"
+            },
+            {
+              "type": "richtext",
+              "id": "technical_issues_answer" ,
+              "label": "Answer",
+              "default" : "<p>Place The Answer Here</p>"
+            }
+          ]
+        },
+        {
+        "type" : "promotions",
+        "name": "Promotions",
+        "settings": 
+          [
+            {
+              "type": "text",
+              "id": "promotions_question",
+              "label": "Question",
+              "default" : "Place The Question Here"
+            },
+            {
+              "type": "richtext",
+              "id": "promotions_answer" ,
+              "label": "Answer",
+              "default" : "<p>Place The Answer Here</p>"
+            }
+          ]
+        }
+    ]
+}
+{% endschema %}

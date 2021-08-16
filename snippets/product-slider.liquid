@@ -1,0 +1,84 @@
+{% if recommend_tag_products == true %}
+  {% assign limit = limit | plus: 0 %}
+  {% assign loop_limit = limit | plus: 1 %}
+{% else %}
+  {% assign limit = limit | plus: 0 %}
+  {% assign loop_limit = limit | plus: 0 %}
+{% endif %}
+{% if related_products == true %}
+  {% assign limit = limit | plus: 0 %}
+  {% assign loop_limit = limit | plus: 1 %}
+{% else %}
+  {% assign limit = limit | plus: 0 %}
+  {% assign loop_limit = limit | plus: 0 %}
+{% endif %}
+{% if per_slide != blank %}
+  {% assign visible_products = per_slide %}
+{% else %}
+  {% if section.settings.products_per != blank %}{% assign visible_products = section.settings.products_per | plus: 0 %}{% else %}{% assign visible_products = block.settings.products_per | plus: 0 %}{% endif %}
+{% endif %}
+{% if template contains 'product' %}
+  {% if limit <= visible_products %}{% assign products_length = limit %}{% else %}{% assign products_length = products.length | minus: 1 %}{% endif %}
+{% elsif featured_collection %}
+  {% assign products_length = collections[featured_collection].products.length %}
+{% else %}
+  {% assign products_length = products.length %}
+{% endif %}
+{% assign size1 = 'x150' %}
+{% assign size2 = 'x300' %}
+<div class="slider-gallery products-slider products-length-{{ products_length }} {% if settings.slideshow_button_style != true %}light-button{% endif %}"
+      data-products-per-slide="{{ visible_products }}"
+      data-products-limit="{{ limit }}"
+      data-products-available="{{ products_length }}">
+  {% for product in products limit: loop_limit %}
+    {% if settings.align_height %}
+      {% assign collection_height = settings.collection_height | plus: 0 %}
+      {% assign product_aspect_ratio = product.featured_image.aspect_ratio | plus: 0 %}
+      {% assign product_set_width = product_aspect_ratio | times: collection_height %}
+      {% if product.featured_image.width >= product.featured_image.height %}{% assign align_height_value = 'width: 100%; height: auto;' %}{% else %}{% assign align_height_value = 'width: 100%;' %}{% endif %}
+    {% endif %}
+    {% if product.available and product.price > 0 %}
+      {% if product.id != skip_product.id %}
+        {% assign feature_image = product.featured_image %}
+        <div class="gallery-cell thumbnail visible-{{ visible_products }}">
+          <div class="product-wrap" 
+               data-limoniapps-discountninja-product-handle="{{ product.handle }}"
+              data-limoniapps-discountninja-product-collections="{{ product.collections | map: 'handle' | join: ',' }}"
+              data-limoniapps-discountninja-product-available="{{ product.available}}"
+              data-limoniapps-discountninja-product-price="{{ product.price}}"
+              data-limoniapps-discountninja-product-compareatprice="{{ product.compare_at_price_max}}"
+              data-limoniapps-discountninja-product-pricevaries="{{ product.price_varies}}"
+              data-limoniapps-discountninja-product-pricemin="{{ product.price_min}}"
+              data-limoniapps-discountninja-product-tags="{{ product.tags | join: ',' }}">
+            {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+            {% unless the_snippet_fave_icon contains 'Liquid error' %}{{ the_snippet_fave_icon }}{% endunless %}    
+            <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+              <a href="{{ product.url | within: collection }}" itemprop="url">
+                <div class="image__container" style="{% if settings.align_height %} max-width: {{ product_set_width }}px; {% else %} max-width: {{- product.featured_image.width -}}px; {% endif %}">
+                  <img  alt="{{ product.title | escape }}"
+                        class="lazyload {{ settings.image_loading_style }}"
+                        style="{{ align_height_value }} max-width: {{- product.featured_image.width -}}px;"
+                        data-sizes="auto"
+                        data-src="{{ feature_image | product_img_url: size1 }}"
+                        data-srcset="
+                        {{ feature_image | product_img_url: size1 }} 1x,
+                        {{ feature_image | product_img_url: size2 }} 2x" />
+                </div>
+                  {% if settings.collection_secondary_image != blank %}
+                    {% if product.images[1] != blank %}{% assign secondary_image = product.images[1] %}{% else %}{% assign secondary_image = product.featured_image %}{% endif %}
+                    <img data-src="{{ secondary_image | product_img_url: '900x' }}" class="secondary lazyload" alt="{{ product.title | escape }}" />
+                  {% endif %}
+                </a>
+              {% include "product-details" %}
+            </div>
+            <a class="product-info__caption {% if settings.thumbnail_hover_enabled %}hidden{% endif %}" href="{{ product.url | within: collection }}" itemprop="url">{% include "product-info" %}</a>
+          </div>
+          {% include 'collection-swatch' %}
+          <div class="product_form__wrapper">
+          {% include 'product-form2' with 'product' %}
+        </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</div>

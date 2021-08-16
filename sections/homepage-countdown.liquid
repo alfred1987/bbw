@@ -1,0 +1,45 @@
+{%- assign homepage_main_sale_enabled = settings.homepage_main_sale_enabled -%}
+{% if homepage_main_sale_enabled %}
+<a href="https://my.bbwbooks.com/pages/free-shipping-within-west-malaysia-terms-and-conditions" target="_blank" class="product__countdown_container" style="background-image: url('{{ section.settings.homepage_msb_desktop | img_url:'master' }}');">
+  <img src="{{ section.settings.homepage_msb_mobile | img_url:'master' }}" class="customCountdownMobile" width="100%" style="display: none;" />
+  <p class="product__countdown_text"></p>
+  {% include 'homepage-countdown' %}
+</a>
+{% endif %}
+{% schema %}
+  {
+    "name": "Homepage Main Sale",
+    "class": "homepage-main-sale",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "homepage_msb_desktop",
+        "label": "Desktop Sale Banner",
+		"info": "1920 x 200px recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "homepage_msb_mobile",
+        "label": "Mobile Sale Banner",
+		"info": "751 x 217px recommended"
+      },
+      {
+        "type": "checkbox",
+        "id": "homepage_msb_text_enabled",
+        "label": "Enable Sale Text",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "homepage_msb_text",
+        "label": "Sale Text"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Homepage Main Sale",
+        "category": "Layout"
+      }
+    ]
+  }
+{% endschema %}

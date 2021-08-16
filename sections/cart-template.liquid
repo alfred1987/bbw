@@ -1,0 +1,304 @@
+<style>div.cart-wait {text-align: center; padding: 10px 15px; background: #f39c41; border-radius: 5px;}</style>
+<div class="cart-wait"><marquee direction="left">Please click the UPDATE CART button before checking out</marquee></div>
+<div class="section clearfix"><div class="sixteen columns"><h1>{{ 'cart.general.title' | t }}</h1><div class="feature_divider"></div></div></div>
+{% if cart.item_count == 0 %}
+<div class="sixteen columns">
+  <div class="section clearfix">
+    <div class="six columns">
+      <p class="quote">{{ 'cart.general.continue_browsing_html' | t }}</p>
+      <a href="/collections/all" class="action_button continue-button add_to_cart">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
+    </div>
+  </div>
+</div>
+{% else %}
+<form action="/cart" method="post" id="cart_form">
+  <div class="section clearfix">
+    <div class="ten columns">
+        {% assign total_saving = 0 %}
+        {% for item in cart.items %}
+        {% if item.variant.compare_at_price > item.variant.price %}{% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}{% assign total_saving = saving | plus: total_saving %}{% endif %}
+        <div class="section clearfix" data-cart-item data-cart-item-key="{{item.key}}">
+          <div class="three columns alpha">
+            <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image">
+              <img alt="{{ item.title | escape }}" class="lazyload {{ settings.image_loading_style }}" style="max-width: {{- item.image.width -}}px" data-sizes="auto" data-src="{{ item | img_url: '100x' }}" data-srcset=" {{ item | img_url: '300x' }} 300w,{{ item | img_url: '600x' }} 600w,{{ item | img_url: '900x' }} 900w" />
+            </a>
+          </div>
+          <div class="thirteen columns omega cart_content_info">
+            <h3><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+            {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+            <p class="meta">{% for option in item.product.options %}<span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />{% endfor %}</p>
+            {% endunless %}
+            <p class="modal_price">
+              {% if item.price > 0 %}<span class="">{% include 'mw_GP_helpers' with 'price', item: item %}</span>{% else %}{{ settings.free_price_text }}{% endif %}
+              {% if item.price < item.variant.compare_at_price %}<span class="money was_price">{{ item.variant.compare_at_price | money }}</span>{% endif %}
+            </p>
+            {% if item.variant.inventory_quantity <= settings.cart_threshold and item.variant.inventory_quantity > 0 %}
+            <div class="lis">{{ 'cart.general.low_in_stock' | t }}</div>
+              {% if item.product.tags contains 'Bestseller' %}
+                  <style>.lis {display: none !important;}</style><div>Selling fast</div>
+              {% endif %}
+            {% elsif item.variant.inventory_quantity == 0 %}
+              <div style="color: red !important;">Out of stock</div>
+            {% endif %}
+            <div class="product-quantity-box left">
+              <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
+              <input type="number" min="1" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-variant-id="{{ item.variant.id }}" data-line-id="{{ forloop.index }}" {% if settings.limit_quantity and item.variant.inventory_management != blank and item.variant.inventory_quantity > 0 and item.variant.inventory_policy == "deny" %}max="{{ item.variant.inventory_quantity }}"{% endif %} disabled/>
+              <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+            </div>
+            <a class="remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0" data-id="{{ item.id }}" {% if settings.enable_multilang %}data-translate="cart.general.remove"{%endif%}>
+              {{ 'cart.general.remove' | t }}
+            </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="five columns offset-by-one">
+      <div class="section clearfix">
+        <div class="subtotal">
+          <p class="cart_subtotal js-cart_subtotal">
+            <span class="right"><span id="toggleDiscount" class=""><span id="">{% include 'mw_GP_helpers' with 'subtotal' %}</span></span></span>
+            <span><span id=''><span id='revy-cart-subtotal-label'>{{ 'cart.general.subtotal' | t  }}</span></span></span>
+          </p>
+          {% if section.settings.display_savings %}
+            <p class="cart_savings sale">
+              {% if total_saving > 0 %}<span class="right"><span class="">{{ total_saving | money }}</span></span><span>{{ 'layout.general.savings' | t }}</span>{% endif %}
+            </p>
+          {% endif %}
+          {% if section.settings.display_special_instructions %}
+          	<label for="note">{{ 'cart.general.note' | t: shop_name: shop.name }}:</label><textarea id="note" name="note" rows="2">{{ cart.note }}</textarea>
+          {% endif %}
+          {% if section.settings.display_tos_checkbox %}
+            <p>
+              <input type="checkbox" class="tos_agree" id="cart_agree" required />
+              <label class="tos_label" for="cart_agree">{{ 'cart.general.agree_to_terms_html' | t }}</label>
+              {% if settings.tos_page != blank %}
+                  <a href="{{ pages[settings.tos_page].url }}" target="_blank" class="tos_icon">{{ 'cart.general.view_terms' | t }}</a>
+              {% endif %}
+            </p>
+          {% endif %}
+          {% if section.settings.cart_message != blank %}
+          	<div>{{ section.settings.cart_message }}</div>
+          {% endif %}
+          <p>
+            <input type="submit" class="action_button add_to_cart" id="checkout" name="checkout" value="{{ 'cart.general.checkout' | t }}" />
+            <a class="action_button js-update-quantity" href="javascript:void(0)" style="display:none;padding:12px;">UPDATE CART</a>
+          </p>
+          {% if content_for_additional_checkout_buttons %}
+          	<div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
+          {% endif %}
+          {% if cart.item_count > 0 %}
+          	<div class="featured-links"><a href="/" class="secondary_button">{{ 'cart.general.continue_shopping_link_html' | t }}</a></div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+</div>
+</form>
+{% include 'cart-shipping-calculator' %}
+{% endif %}
+{% if section.settings.pwp_switch %}
+  {% for block in section.blocks %}
+      {% if block.type == 'pwp_products' %}
+          <div class="list_pwp_products" 
+               data-image="{{ block.settings.pwp_image | img_url: 'master' }}" 
+               data-product="{{ block.settings.pwp_product }}" 
+               data-productid="{{ block.settings.pwp_product_id }}" 
+               data-collectionurl="{{ block.settings.pwp_collection_url }}"  
+               data-pwpreached="{{ section.settings.pwp_reached }}" 
+               data-productthreshold="{{ block.settings.pwp_threshold }}"  
+               data-monthstart="{{ block.settings.pwp_month_start }}" 
+               data-daystart="{{ block.settings.pwp_day_start }}" 
+               data-hourstart="{{ block.settings.pwp_hour_start }}" 
+               data-minutestart="{{ block.settings.pwp_minute_start }}" 
+               data-monthend="{{ block.settings.pwp_month_end }}" 
+               data-dayend="{{ block.settings.pwp_day_end }}" 
+               data-hourend="{{ block.settings.pwp_hour_end }}" 
+               data-minuteend="{{ block.settings.pwp_minute_end }}"></div>
+      {% endif %}
+  {% endfor %}
+  <div class="pwp remodal quick-shop js-quick-shop" data-remodal-id="pwp"><a data-remodal-action="close" class="remodal-close"></a><div class="container section"></div></div>
+{% endif %}
+<script>
+  document.addEventListener("limoniapps:discountninja:cart:updated", function (event) {
+    setTimeout(function(){
+      var before_discount_tag = $("[data-limoniapps-discountninja-shortcode-offer='AMOUNT_LEFT_BEFORE_DISCOUNT'][data-limoniapps-discountninja-shortcode-offer-token='94WYB']");
+      var before_discount_price = before_discount_tag.text();
+      if(before_discount_price.length > 0) {
+        var currency = before_discount_price.substring(0, 2);
+        var price = parseFloat((before_discount_price.split(currency)[1]).replace(',', ''));
+        var correct_threshold = 100.00 - ((100.00 + 16.99) - price);
+        var discount_price = correct_threshold.toFixed(2);
+        if(correct_threshold < 0){
+          before_discount_tag.parent().empty();
+        }else{
+          before_discount_tag.text(currency + discount_price);
+        }
+      }
+    }, 600)
+  });
+</script>
+{% schema %}
+{
+  "name": "Cart page",
+  "class": "cart-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_special_instructions",
+      "label": "Show \"note\" text box"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_tos_checkbox",
+      "label": "Show \"agree to terms\" checkbox"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_savings",
+      "label": "Show total savings",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "cart_message",
+      "label": "Cart message"
+    },
+	{
+      "type": "checkbox",
+      "id": "pwp_switch",
+      "label": "Turn on PWP",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "pwp_reached",
+      "label": "PWP amount reached"
+    }
+  ],
+	"blocks": [
+    {
+      "type": "pwp_products",
+      "name": "PWP object",
+      "settings": [
+		{
+          "type": "header",
+          "content": "PWP Pop Up Setup"
+        },
+		{
+          "type": "image_picker",
+          "id": "pwp_image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "pwp_threshold",
+          "label": "Amount Threshold"
+        },
+        {
+          "type": "header",
+          "content": "Start Date"
+        },
+        {
+          "type": "range",
+          "id": "pwp_month_start",
+          "label": "Month",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_day_start",
+          "label": "Day",
+          "min": 0,
+          "max": 31,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_hour_start",
+          "label": "Hour",
+          "min": 0,
+          "max": 23,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_minute_start",
+          "label": "Minute",
+          "min": 0,
+          "max": 59,
+          "step": 1,
+          "default": 0
+        },
+		{
+          "type": "header",
+          "content": "End Date"
+        },
+        {
+          "type": "range",
+          "id": "pwp_month_end",
+          "label": "Month",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_day_end",
+          "label": "Day",
+          "min": 0,
+          "max": 31,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_hour_end",
+          "label": "Hour",
+          "min": 0,
+          "max": 23,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "pwp_minute_end",
+          "label": "Minute",
+          "min": 0,
+          "max": 59,
+          "step": 1,
+          "default": 0
+        },
+		{
+          "type": "header",
+          "content": "PWP Collection Setup"
+        },
+		{
+          "type": "text",
+          "id": "pwp_collection_url",
+          "label": "Collection URL"
+        },
+		{
+          "type": "header",
+          "content": "PWP Product Setup"
+        },
+        {
+           "type": "product",
+           "id": "pwp_product",
+           "label": "Product Selection"
+        },
+        {
+          "type": "text",
+          "id": "pwp_product_id",
+          "label": "Product ID"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+{% if type == 'block' %}{% assign show_price = block.settings.show_price %}{% else %}{% assign show_price = section.settings.show_price %}{% endif %}
+<div class="thumbnail-overlay">
+  {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+  {% unless the_snippet_fave_icon contains 'Liquid error' %}{{ the_snippet_fave_icon }}{% endunless %}    
+  <a href="{{ product.url | within: collection }}" itemprop="url" class="hidden-product-link">{{ product.title }}</a>
+</div>
+<div class="banner_holder">
+  {% if product.available %}{% if show_price and settings.sale_banner_enabled and product.compare_at_price_max > product.price %}<div class="sale_banner_product">-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</div>{% endif %}{% endif %}
+</div>

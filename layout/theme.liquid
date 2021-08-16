@@ -1,0 +1,97 @@
+{% capture content %}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--><html lang="{{ shop.locale }}"><!--<![endif]-->
+<head>
+  <meta name="facebook-domain-verification" content="byb21u8vq89i4e4o9u68ath2thv9t8" />
+  <meta charset="utf-8"><meta http-equiv="cleartype" content="on"><meta name="robots" content="index,follow">
+  {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %}{% endif %}
+  <title>
+    {% if template contains "index" %}
+    {{ page_title }}
+    {% else %}
+    {{ page_title }}
+    {% if current_tags %}{{ 'general.meta.tagged_html' | t: tags: meta_tags }}{% endif %}
+    {% if current_page != 1 %}{{ 'general.meta.page' | t: page_number: current_page }}{% endif %}
+    {% unless page_title contains shop.name %} -{{ shop.name }}{% endunless %}
+    {% endif %}
+  </title>
+  {% if page_description %}<meta name="description" content="{{ page_description | escape }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags | escape }}.{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}.{% endif %}" />{% endif %}
+  <meta name="HandheldFriendly" content="True"><meta name="MobileOptimized" content="320"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.shop_bg_color }}">
+  <script type="text/javascript" src="https://cdn.shopify.com/s/files/1/0552/2233/7720/files/main.jquery.min.js"></script>
+  {% include 'google-font' %}
+  {% include 'social-meta-info' %}
+  {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}{% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
+  {% if settings.favicon != nil %}<link rel="shortcut icon" type="image/x-icon" href="{{ settings.favicon | img_url: '32x32' }}">{% else %}<link rel="shortcut icon" type="image/x-icon" href="{{ 'bbw-favicon.png' | asset_url }}">{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}" />
+  {% if template contains 'customers' %}{{ "shopify_common.js" | shopify_asset_url | script_tag }}{{ "customer_area.js"  | shopify_asset_url | script_tag }}{% endif %}
+  {{ content_for_header }}
+  {% include 'seo-snippet' %}
+  {% render 'vitals-loader' %}
+  {% render 'minmaxify-head' %}
+  {%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}
+  {%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-568141762"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'AW-568141762');
+    $(document).ready(function(){
+      var $returnTo = $('<input type="hidden" name="return_to" value="/cart" />');
+      if($('#RegisterForm').length > 0){$returnTo.insertBefore($('#create_customer input[type="submit"]'));} else if ($('#g-recaptcha').length){$returnTo.insertBefore($('.shopify-challenge__container input[type="submit"]'));}
+      var cu = $("[name=checkout_url");
+      if(typeof cu[0] != "undefined"){cu[0].value = "/cart";}   
+    });
+  </script>
+  <link href="{{ 'styles.scss.css' | asset_url }}" rel="stylesheet" />
+  <script type="text/javascript" src="{{ "app.js" | asset_url }}" async></script>
+  {%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}
+  {%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+  
+
+
+
+{% render 'limoniapps-discountninja-header' %}{%- if product -%}{%- assign discountninjaproduct = product -%}{%- endif -%}{%- if collection -%}{%- assign discountninjacollection = collection -%}{%- endif -%}
+</head>
+{% if template contains "index" %}{% assign feature_image = true %}
+{% elsif template contains "collection" %}{% assign feature_image = true %}
+{% elsif template contains "blog" %}{% assign feature_image = true %}
+{% elsif template contains "article" %}{% assign feature_image = true %}
+{% elsif template contains "contact" %}{% assign feature_image = true %}
+{% elsif template contains "product" %}{% assign feature_image = true %}
+{% elsif template contains "gallery" %}{% assign feature_image = true %}
+{% elsif template contains "banner" %}{% assign feature_image = true %}
+{% elsif template contains "details" %}{% assign feature_image = true %}
+{% elsif template contains "faq" %}{% assign feature_image = true %}
+{% elsif template contains "search" %}{% assign feature_image = true %}
+{% else %}{% assign feature_image = false %}{% endif %}
+<body class="{{ template | replace: '.', '-' | handle }}" data-money-format="{{ shop.money_format }}" data-shop-url="{{ shop.url }}">
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRW9WWX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {% section 'header-free-shipping' %}{% section 'header' %}
+  <div class="mega-menu-container">
+    {% if settings.mega_menu_1 %}{% section 'mega-menu-1' %}{% endif %}
+    {% if settings.mega_menu_2 %}{% section 'mega-menu-2' %}{% endif %}
+    {% if settings.mega_menu_3 %}{% section 'mega-menu-3' %}{% endif %}
+    {% if settings.mega_menu_4 %}{% section 'mega-menu-4' %}{% endif %}
+    {% if settings.mega_menu_5 %}{% section 'mega-menu-5' %}{% endif %}
+  </div>
+  {% unless feature_image %}<div class="container main content">{% endunless %}{{ content_for_layout }}</div>
+  {% section 'footer' %}
+  {% if settings.show_shipping_calculator and template contains "cart" %}{% include 'cart-shipping-scripts' %}{% endif %}
+  {% unless settings.performance == "sport" or template contains "customer" %}
+  <script src="{{ 'instantclick.min.js' | asset_url }}" type="tpl" data-no-instant></script>
+  <script data-no-instant>function inIframe() { try { return window.self !== window.top } catch (t) { return !0 } } inIframe() || (InstantClick.on("change", function () { $('head script[src*="shopify"]').each(function () { var t = document.createElement("script"); t.type = "text/javascript", t.src = $(this).attr("src"), $("body").append(t) }), $("html").removeClass("remodal-is-locked") }), InstantClick.init());</script>
+  {% endunless %}
+  {% capture the_snippet_content %}{% render 'socialshopwave-helper' %}{% endcapture %}
+  {% unless the_snippet_content contains 'Liquid error' %}{{ the_snippet_content }}{% endunless %}
+  {% if settings.custom_scripts != blank %}<script>{{ settings.custom_scripts }}</script>{% endif %}
+  {% include 'limoniapps-discountninja-body' %}
+</body>
+</html>
+{% endcapture %}
+{% assign content = content | replace_first: '<!DOCTYPE', '!DOCTYPE' | split: ' <' %}
+{% for html in content %}{% assign htmlblock = html | strip | prepend: ' <' %}{{htmlblock | replace: ' </', '</'}}{% endfor %}

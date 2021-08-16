@@ -1,0 +1,33 @@
+<div class="gallery-wrap js-product-page-gallery clearfix gallery-arrows--{{section.settings.gallery_arrows}} {% if section.settings.product_thumbs %}{{ section.settings.thumbnail_position }}{% endif %} slideshow_animation--{{ section.settings.slideshow_animation }}">
+  <div class="product_gallery product-{{ product.id }}-gallery
+              {% if product.images.size > 1 %} multi-image {% endif %}
+              {% if product.images.size <= 1 %} single-image {% endif %}
+              {% if settings.slideshow_button_style != true %}light-button{% endif %}"
+      data-zoom="{{ section.settings.activate_zoom }}"
+      data-autoplay="{{ section.settings.activate_autoplay }}">
+      {% for media in product.media %}
+        {% case media.media_type %}
+          {% when 'video' %}
+            {% if section.settings.enable_product_video_type_a %}
+            	<div class="gallery-cell" data-media-id="{{ media.id }}">{{ media | video_tag: controls: true }}</div>
+            {% endif %}
+          {% else %}
+            <div class="gallery-cell" data-media-id="{{ media.id }}"><div class="image__container">{{ media | media_tag: image_size: "master" }}</div></div>
+        {% endcase %}
+      {% endfor %}
+  </div>
+  {% if section.settings.product_thumbs %}
+    <div class="product_gallery_nav product-{{ product.id }}-gallery-nav">
+      {% for media in product.media %}
+        {% case media.media_type %}
+            {% when 'video' %}
+              {% if section.settings.enable_product_video_type_a %}
+              	<div class="gallery-cell" data-media-id="{{ media.id }}"><div class="image__container"><img src="{{ media.preview_image | img_url: "master" }}" /></div></div>
+              {% endif %}
+            {% else %}
+              <div class="gallery-cell" data-media-id="{{ media.id }}"><div class="image__container">{{ media | media_tag: image_size: "master" }}</div></div>
+          {% endcase %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
